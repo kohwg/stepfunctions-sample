@@ -68,9 +68,9 @@ Resources:
       Environment: 
         Variables:
           tablename: !Ref BranchInfoTable
-    Policies:
-      - DynamoDBReadPolicy:
-          TableName: !Ref BranchInfoTable
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref BranchInfoTable
 
   UpdateClassInfoFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
@@ -81,9 +81,9 @@ Resources:
       Environment: 
         Variables:
           tablename: !Ref ClassInfoTable
-    Policies:
-      - DynamoDBWritePolicy:
-          TableName: !Ref ClassInfoTable
+      Policies:
+        - DynamoDBWritePolicy:
+            TableName: !Ref ClassInfoTable
 
   ClassInfoTable:
     Type: AWS::Serverless::SimpleTable # More info about SimpleTable Resource: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-simpletable.html
