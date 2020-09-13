@@ -25,14 +25,14 @@ Resources:
   BranchValidationFailedSNSTopic:
     Type: AWS::SNS::Topic
     Properties:
-      DisplayName: !Sub 'branch-validation-sns-topic'
-      TopicName: !Sub 'branch-validation-topic'
+      DisplayName: !Sub 'branch-validation-sns-topic-${AWS::StackName}'
+      TopicName: !Sub 'branch-validation-topic-${AWS::StackName}'
 
   UpdataClassInfoSuccessSNSTopic:
     Type: AWS::SNS::Topic
     Properties:
-      DisplayName: !Sub 'update-class-info-sns-topic'
-      TopicName: !Sub 'update-class-info-topic'
+      DisplayName: !Sub 'update-class-info-sns-topic-${AWS::StackName}'
+      TopicName: !Sub 'update-class-info-topic-${AWS::StackName}'
 
   UpdateClassInfoStateMachineLogs:
     Type: AWS::Logs::LogGroup
