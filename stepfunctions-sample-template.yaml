@@ -49,7 +49,7 @@ Resources:
             Path: /request
             RestApiId:
               Ref: ApiGatewayApi
-     Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
+      Policies: # Find out more about SAM policy templates: https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-policy-templates.html
         - LambdaInvokePolicy:
             FunctionName: !Ref BranchCheckerFunction
         - LambdaInvokePolicy:
