@@ -4,6 +4,17 @@ Description: >
   sample-stepfunctions
 
   Sample SAM Template for sample-stepfunctions
+  
+Parameters:
+  MasterSecretArn:
+    Description: Master Secret ARN
+    Type: String
+  MasterSecretsManagerKey:
+    Description: KMS Key for the use of secrets across accounts
+    Type: String
+  Stage:
+    Description: Environment
+    Type: String
 
 Resources:
   ApiGatewayApi:
