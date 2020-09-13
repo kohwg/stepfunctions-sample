@@ -1,0 +1,80 @@
+{
+    "Comment": "A state machine that does update class information",
+    "StartAt": "Branch Validation",
+    "States": {
+        "Branch Validation": {
+            "Type": "Task",
+            "Resource": "${BranchCheckerFunctionArn}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 15,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 1.5
+                }
+            ],
+            "Next": "Check validation result"
+        },
+        "Check validation result": {
+            "Type": "Choice",
+            "Choices": [         
+              {
+                "Not" : {
+                  "Variable": "$.branch_validation_result",
+                  "StringEquals": "success"
+                },
+                "Next": "BranchValidation-Failed-SNS"
+              },
+              {
+                "Variable": "$.branch_validation_result",
+                "StringEquals": "success",
+                "Next": "Update Class Information"
+              }
+            ],
+            "Default": "Update Class Information"
+          },
+        "BranchValidation-Failed-SNS": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::sns:publish",
+            "Parameters": {
+              "Message.$": "$",
+              "TopicArn": "${BranchValidationFailedSNSTopic}"
+            },
+            "ResultPath": "$.notification",
+            "Next": "fail"
+        },
+        "Update Class Information": {
+            "Type": "Task",
+            "Resource": "${UpdateClassInfoFunctionArn}",
+            "Retry": [
+                {
+                    "ErrorEquals": [
+                        "States.TaskFailed"
+                    ],
+                    "IntervalSeconds": 2,
+                    "MaxAttempts": 3,
+                    "BackoffRate": 1
+                }
+            ],
+            "Next": "UpdataClassInfo-Success-SNS"
+        },
+        "UpdataClassInfo-Success-SNS": {
+            "Type": "Task",
+            "Resource": "arn:aws:states:::sns:publish",
+            "Parameters": {
+              "Message.$": "$",
+              "TopicArn": "${UpdataClassInfoSuccessSNSTopic}"
+            },
+            "ResultPath": "$.notification",
+            "Next": "success"
+        },
+        "fail": {
+            "Type": "Fail"
+        },
+        "success": {
+            "Type": "Succeed"
+        }
+    }
+}
