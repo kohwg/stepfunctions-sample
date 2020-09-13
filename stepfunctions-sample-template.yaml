@@ -4,7 +4,7 @@ Description: >
   sample-stepfunctions
 
   Sample SAM Template for sample-stepfunctions
-  
+
 Parameters:
   MasterSecretArn:
     Description: Master Secret ARN
@@ -79,6 +79,9 @@ Resources:
       Environment: 
         Variables:
           tablename: !Ref BranchInfoTable
+          SECRET_ARN: !Ref MasterSecretArn
+          SECRET_MASTER: !Ref MasterSecretsManagerKey
+          STAGE: !Ref Stage
       Policies:
         - DynamoDBReadPolicy:
             TableName: !Ref BranchInfoTable
