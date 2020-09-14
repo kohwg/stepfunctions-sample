@@ -19,7 +19,7 @@ phases:
       - echo "It will then create a new version of the template file with the S3 url to the source code"
       - echo "Learn more at https://docs.aws.amazon.com/lambda/latest/dg/serverless_app.html"
       # Stepfunctions ASL file을 S3 bucket에 업로드 하기 위해 SAM 으로 변경
-      # cloudformation에서는 localpath upload를 자동으로 해주지 않음, cloudformation을 사용하려면 Definition으로 template 안에 정의를 해주어야만 함 
+      # cloudformation에서는 localpath upload를 자동으로 해주지 않음, cloudformation을 사용하려면 Definition으로 template 안에 정의를 해주어야만 함
       - sam package --template-file stepfunctions-sample-template.yaml --output-template-file sample-transformed.yaml --s3-bucket $SAM_BUCKET
  #     - aws cloudformation package --template-file stepfunctions-sample-template.yaml --output-template-file sample-transformed.yaml --s3-bucket $SAM_BUCKET
       - |-
