@@ -1,16 +1,22 @@
-## Code build
-$(aws cloudformation list-exports --query "Exports[?Name=='SamBucket'].Value" --output text)
-
-aws cloudformation package --template-file sample.yaml --output-template-file sample-transformed.yaml --s3-bucket $(aws cloudformation list-exports --query "Exports[?Name=='SamBucket'].Value" --output text)
-aws cloudformation deploy --template-file sample-transformed.yaml --stack-name sample-project  --capabilities CAPABILITY_IAM
-
-## stepfunctions-sample
+## Stepfunctions-Sample
 
 This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders:
 
 - functions - Code for the application's Lambda functions.
 - statemachines - Definition for the state machine that orchestrates the stock trading workflow.
 - stepfunctions-sample-template.yaml - A template that defines the application's AWS resources.
+
+<img src="stepfunctions-sample.png" alt="Stepfunctions-sample-architecture" />
+
+## Deploy the sample application via Code build 
+- Enterprise CICD pipeline에 업로드 시 buildspec.build.yaml에 따라 build 진행
+```
+$(aws cloudformation list-exports --query "Exports[?Name=='SamBucket'].Value" --output text)
+
+aws cloudformation package --template-file sample.yaml --output-template-file sample-transformed.yaml --s3-bucket $(aws cloudformation list-exports --query "Exports[?Name=='SamBucket'].Value" --output text)
+
+aws cloudformation deploy --template-file sample-transformed.yaml --stack-name sample-project  --capabilities CAPABILITY_IAM
+```
 
 ## Deploy the sample application
 
@@ -58,8 +64,11 @@ aws cloudformation delete-stack --stack-name sample-stepfunctions
 ```
 ## Resources
 Creaete Stepfunctions API on API GATEWAY : https://docs.aws.amazon.com/ko_kr/step-functions/latest/dg/tutorial-api-gateway.html
+
 Stepfunctions API Reference : https://docs.aws.amazon.com/step-functions/latest/apireference/API_StartExecution.html#API_StartExecution_RequestSyntax
+
 Stepfunctions with SAM : 
 - 예시 : https://aws.amazon.com/ko/blogs/compute/simplifying-application-orchestration-with-aws-step-functions-and-aws-sam/
 - developer guide : https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
+
 Stepfunctions with CDK : https://www.youtube.com/watch?v=T9iehMn5xHw&list=PLJo-rJlep0EBq0-P-2wq5tzTXjL_jmynX&index=7&t=0s&pbjreload=101
