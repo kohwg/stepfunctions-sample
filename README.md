@@ -21,6 +21,42 @@ aws cloudformation package --template-file sample.yaml --output-template-file sa
 
 aws cloudformation deploy --template-file sample-transformed.yaml --stack-name sample-project  --capabilities CAPABILITY_IAM
 ```
+
+## After deployment, test on AWS console
+1. Stepfunctions 콘솔 상에서 아래 이벤트로 test execution을 실행하면, 해당 branchcode를 찾을 수 없기 때문에 branchcode validation fail이 발생
+
+```bash
+# Event contents
+{
+  "branch_code": "10",
+  "class_name": "xxx",
+  "class_info": "xxx, xxx"
+}
+```
+
+2. DDB Table에 item 생성 
+
+```bash
+{
+    "branch_code": "10",
+    "Available": "true"
+}
+```
+
+3. Stepfunctions 콘솔 상에서 아래 이벤트로 test execution을 실행하면, stepfunctions이 성공적으로 완료됨 
+
+```bash
+# Event contents
+{
+  "branch_code": "10",
+  "class_name": "xxx",
+  "class_info": "xxx, xxx"
+}
+```
+
+4. class table에 입력하였던 class 정보가 입력되었는지 확인
+
+
 ## Stepfunctions with SAM
 현재 예제에서는 stepfunction definition 파일이 .asl파일로 정의 되어 있으나, cloudformation teamplate 파일에서 리소스로 작성 가능
 - https://docs.amazonaws.cn/en_us/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
