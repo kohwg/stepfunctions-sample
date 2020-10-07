@@ -8,17 +8,25 @@ This project contains source code and supporting files for a serverless applicat
 
 <img src="stepfunctions-sample.png" alt="Stepfunctions-sample-architecture" />
 
+## Stepfunctions test in Local
+local test를 위해서는 docker 혹은 stepfunction downloadable 파일을 다운로드 받은 후, sam, aws cli 를 통해 테스트 가능 
+- https://docs.aws.amazon.com/ko_kr/step-functions/latest/dg/sfn-local-lambda.html
+
 ## Deploy the sample application via Code build 
 - Enterprise CICD pipeline에 업로드 시 buildspec.build.yaml에 따라 build 진행
-```
+```bash
 $(aws cloudformation list-exports --query "Exports[?Name=='SamBucket'].Value" --output text)
 
 aws cloudformation package --template-file sample.yaml --output-template-file sample-transformed.yaml --s3-bucket $(aws cloudformation list-exports --query "Exports[?Name=='SamBucket'].Value" --output text)
 
 aws cloudformation deploy --template-file sample-transformed.yaml --stack-name sample-project  --capabilities CAPABILITY_IAM
 ```
+## Stepfunctions with SAM
+현재 예제에서는 stepfunction definition 파일이 .asl파일로 정의 되어 있으나, cloudformation teamplate 파일에서 리소스로 작성 가능
+- https://docs.amazonaws.cn/en_us/serverless-application-model/latest/developerguide/sam-resource-statemachine.html
 
-## Deploy the sample application
+
+## SAM CLI
 
 The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda.
 
@@ -28,12 +36,6 @@ To use the SAM CLI, you need the following tools:
 * Node.js - [Install Node.js 12](https://nodejs.org/en/), including the NPM package management tool.
 * Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
 
-To build and deploy your application for the first time, run the following in your shell:
-
-```bash
-sam build
-sam deploy --guided
-```
 
 The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
 
@@ -45,23 +47,6 @@ The first command will build the source of your application. The second command 
 
 You can find your State Machine ARN in the output values displayed after deployment.
 
-## Use the SAM CLI to build and test locally
-
-Build the Lambda functions in your application with the `sam build --use-container` command.
-
-```bash
-sample-stepfunctions$ sam build
-```
-
-The SAM CLI installs dependencies defined in `functions/*/package.json`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
-
-## Cleanup
-
-To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
-
-```bash
-aws cloudformation delete-stack --stack-name sample-stepfunctions
-```
 ## Resources
 Creaete Stepfunctions API on API GATEWAY : https://docs.aws.amazon.com/ko_kr/step-functions/latest/dg/tutorial-api-gateway.html
 
